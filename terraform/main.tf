@@ -28,34 +28,3 @@ resource "azurerm_storage_account" "storage_account" {
     index_document = "index.html"
   }
 }
-
-// Files will be uploaded using Workflow instead
-
-/* resource "azurerm_storage_blob" "index" {
-  name                   = "index.html"
-  storage_account_name   = azurerm_storage_account.storage_account.name
-  storage_container_name = "$web"
-  type                   = "Block"
-  content_type           = "text/html"
-  source                 = "../website/index.html"
-}
-
-resource "azurerm_storage_blob" "css" {
-  name                   = "style.css"
-  storage_account_name   = azurerm_storage_account.storage_account.name
-  storage_container_name = "$web"
-  type                   = "Block"
-  content_type           = "text/css"
-  source                 = "../website/style.css"
-}
-
-resource "azurerm_storage_blob" "images" {
-  for_each = fileset("../website", "*.png")
-
-  name                   = each.value
-  storage_account_name   = azurerm_storage_account.storage_account.name
-  storage_container_name = "$web"
-  type                   = "Block"
-  content_type           = "image/png"
-  source                 = "../website/${each.value}"
-} */
