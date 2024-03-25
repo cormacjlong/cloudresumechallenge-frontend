@@ -16,7 +16,7 @@ terraform {
     resource_group_name  = "rg-terraform"
     storage_account_name = "stcjlterraform"
     container_name       = "tfstate"
-    key                  = "${var.project_prefix}${var.env}.tfstate"
+    key                  = "crc.tfstate"
     use_oidc             = true
   }
 }
