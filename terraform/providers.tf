@@ -4,7 +4,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~>3.0"
+      version = "~>3.7.0"
     }
 
     random = {
@@ -12,8 +12,17 @@ terraform {
       version = "~>3.0"
     }
   }
+    backend "azurerm" {
+    resource_group_name  = "rg-terraform"
+    storage_account_name = "stcjlterraform"
+    container_name       = "tfstate"
+    key                  = "${var.project_prefix}${var.env}.tfstate"
+    use_oidc             = true
+  }
 }
 
+# Configure the Microsoft Azure Provider
 provider "azurerm" {
+  use_oidc = true
   features {}
 }
