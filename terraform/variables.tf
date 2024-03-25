@@ -11,13 +11,13 @@ variable "resource_group_name_prefix" {
 }
 
 variable "project_prefix" {
-  type = string
+  type        = string
   description = "This is a short prefix that relates to the project and will be added to all resource names."
-  default = "crc"
+  default     = "crc"
 }
 
 variable "env" {
-  type = string
+  type        = string
   description = "The environment currently being deplyed."
-  default = "dev"
+  default     = "dev"
 }

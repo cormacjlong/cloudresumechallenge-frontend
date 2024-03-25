@@ -1,12 +1,12 @@
 data "azurerm_client_config" "current" {}
 
-data "azurerm_subscription" "current" {  
+data "azurerm_subscription" "current" {
 }
 
 module "naming" {
-  source  = "Azure/naming/azurerm"
-  suffix = [ var.project_prefix, var.env ]
-  unique-seed = "${data.azurerm_subscription.current.subscription_id}"
+  source      = "Azure/naming/azurerm"
+  suffix      = [var.project_prefix, var.env]
+  unique-seed = data.azurerm_subscription.current.subscription_id
 }
 
 resource "azurerm_resource_group" "rg" {
