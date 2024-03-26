@@ -132,7 +132,7 @@ jobs:
     # Terraform Apply
     - name: Terraform Apply
       id: tf-apply
-      run: terraform apply -auto-approve tfplan
+      run: terraform apply -auto-approve tfplan | tee apply_output.txt
       working-directory: ./terraform
 
     # Set Terraform Outputs as environment variables
