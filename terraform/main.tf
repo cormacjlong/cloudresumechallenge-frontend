@@ -9,10 +9,10 @@ module "naming" {
   unique-seed = data.azurerm_subscription.current.subscription_id
 }
 
-# Create a resource group to host the storage account and CDN profile
+# Create a resource group to host the frontend resources
 resource "azurerm_resource_group" "rg" {
   location = var.resource_location
-  name     = "${module.naming.resource_group.name}-frontend"
+  name     = module.naming.resource_group.name
 }
 
 # Create a storage account to host the static website
