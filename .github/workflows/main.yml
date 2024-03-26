@@ -141,8 +141,6 @@ jobs:
     name: 'Deploy Website'
     runs-on: ubuntu-latest
     needs: [terraform-apply]
-    environment:
-      name: 'dev'
 
     steps:      
       - name: Login to Azure
@@ -158,4 +156,4 @@ jobs:
         uses: azure/cli@v1
         with:
           inlineScript: |
-            az storage blob upload-batch -s website -d \$web --account-name ${{ needs.terraform-apply.outputs.storage-account-name }}
+            az storage blob upload-batch -s website -d \$web --account-name ${{ needs.terraform-apply.outputs.storage_account_name }}
