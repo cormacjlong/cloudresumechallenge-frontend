@@ -176,4 +176,4 @@ jobs:
         uses: azure/cli@v1
         with:
           inlineScript: |
-            az storage blob upload-batch -s website -d \$web --account-name ${{ needs.terraform-apply.outputs.storage_account_name }} --auth-mode login
+            az storage blob upload-batch -s website -d \$web --account-name $storage_account_name --auth-mode login
