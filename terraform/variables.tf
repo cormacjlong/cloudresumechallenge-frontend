@@ -13,7 +13,7 @@ variable "resource_group_name_prefix" {
 variable "project_prefix" {
   type        = string
   description = "This is a short prefix that relates to the project and will be added to all resource names."
-  default     = "crc"
+  default     = "cloudresume"
 }
 
 variable "env" {
