@@ -142,10 +142,11 @@ jobs:
     # Set Terraform Outputs as environment variables
     - name: Set Terraform Outputs
       id: tf-apply-outputs
+      shell: pwsh
       run: |
-        echo "primary_web_host=$(grep 'primary_web_host' apply_output.txt | awk '{print $3}' | tr -d '\"')"
-        echo "resource_group_name=$(grep 'resource_group_name' apply_output.txt | awk '{print $3}' | tr -d '\"')"
-        echo "storage_account_name=$(grep 'storage_account_name' apply_output.txt | awk '{print $3}' | tr -d '\"')"
+        "primary_web_host=$(((Select-String -Path ./apply_output.txt -Pattern 'primary_web_host').line -split '"')[1])"
+        "resource_group_name=$(((Select-String -Path ./apply_output.txt -Pattern 'resource_group_name').line -split '"')[1])"
+        "storage_account_name=$(((Select-String -Path ./apply_output.txt -Pattern 'storage_account_name').line -split '"')[1])"
       working-directory: ./terraform
 
     # Troubleshooting step: Print the values of the environment variables
