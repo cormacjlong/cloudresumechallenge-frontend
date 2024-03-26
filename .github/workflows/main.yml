@@ -130,3 +130,9 @@ jobs:
     - name: Terraform Apply
       run: terraform apply -auto-approve tfplan
       working-directory: ./terraform
+
+    # Save Storage Account name to environment variable
+    - name: Save Storage Account Name
+      id: storage-account-name
+      run: |
+        echo "storage_account_name=$(terraform output storage_account_name)" >> $GITHUB_ENV
