@@ -37,35 +37,19 @@ resource "azurerm_cdn_profile" "cdn_profile" {
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
   sku                 = "Standard_Microsoft"
+}
 
-  dynamic "endpoint" {
-    for_each = var.env == "prod" ? [1] : []
-    content {
-      name                   = "${azurerm_storage_account.storage_account.name}-endpoint"
-      is_http_allowed        = false
-      is_https_allowed       = true
-      origin_host_header     = azurerm_storage_account.storage_account.primary_web_endpoint
-      origin_host_header_cdn = azurerm_storage_account.storage_account.primary_web_endpoint
-      origin_path            = ""
-      content_types_to_compress = [
-        "text/plain",
-        "text/html",
-        "text/css",
-        "application/javascript",
-        "application/x-javascript",
-        "application/javascript; charset=utf-8",
-        "application/x-javascript; charset=utf-8",
-        "text/javascript",
-        "text/javascript; charset=utf-8",
-        "text/javascript; charset=utf-8",
-        "application/json",
-        "application/json; charset=utf-8",
-        "application/json; charset=utf-8",
-        "application/xml",
-        "application/xml; charset=utf-8",
-        "application/xml; charset=utf-8",
-        "text/xml"
-      ]
-    }
+# Create a CDN endpoint to front the storage account
+resource "azurerm_cdn_endpoint" "cdn_endpoint" {
+  name                = module.naming.cdn_endpoint.name_unique
+  profile_name        = azurerm_cdn_profile.cdn_profile.name
+  resource_group_name = azurerm_resource_group.rg.name
+  location            = azurerm_resource_group.rg.location
+
+  origin {
+    name      = "${azurerm_storage_account.storage_account.name}-origin"
+    host_name = azurerm_storage_account.example.primary_web_host
   }
+
+  querystring_caching_behaviour = "IgnoreQueryString"
 }
