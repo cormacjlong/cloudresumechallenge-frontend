@@ -135,4 +135,4 @@ jobs:
     - name: Save Storage Account Name
       id: storage-account-name
       run: |
-        echo "storage_account_name=$(terraform output storage_account_name)" >> $GITHUB_ENV
+        echo "storage_account_name=$(terraform output storage_account_name)" >> $env:GITHUB_ENV
