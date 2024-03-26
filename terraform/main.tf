@@ -29,6 +29,17 @@ resource "azurerm_storage_account" "storage_account" {
   static_website {
     index_document = "index.html"
   }
+
+  blob_properties {
+    cors_rule {
+      allowed_headers    = ["*"]
+      allowed_methods    = ["*"]
+      allowed_origins    = ["${azurerm_cdn_endpoint.cdn_endpoint.host_name}"]
+      exposed_headers    = ["*"]
+      max_age_in_seconds = 200
+    }
+  }
+
 }
 
 # Create a CDN profile to front the storage account
