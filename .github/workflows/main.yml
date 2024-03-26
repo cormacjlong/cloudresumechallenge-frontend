@@ -141,13 +141,14 @@ jobs:
 
     # Set Terraform Outputs as environment variables
     - name: Set Terraform Outputs
+      id: tf-apply-outputs
       run: |
-        echo "primary_web_host=$(grep '^primary_web_host' apply_output.txt | awk '{print $3}' | tr -d '\"')"
-        echo "primary_web_host=$(grep '^primary_web_host' apply_output.txt | awk '{print $3}' | tr -d '\"')" >> $GITHUB_ENV
-        echo "resource_group_name=$(grep '^resource_group_name' apply_output.txt | awk '{print $3}' | tr -d '\"')"
-        echo "resource_group_name=$(grep '^resource_group_name' apply_output.txt | awk '{print $3}' | tr -d '\"')" >> $GITHUB_ENV
-        echo "storage_account_name=$(grep '^storage_account_name' apply_output.txt | awk '{print $3}' | tr -d '\"')"
-        echo "storage_account_name=$(grep '^storage_account_name' apply_output.txt | awk '{print $3}' | tr -d '\"')" >> $GITHUB_ENV
+        echo "primary_web_host=$(grep 'primary_web_host' apply_output.txt | awk '{print $3}' | tr -d '\"')"
+        echo "primary_web_host=$(grep 'primary_web_host' apply_output.txt | awk '{print $3}' | tr -d '\"')" >> $GITHUB_ENV
+        echo "resource_group_name=$(grep 'resource_group_name' apply_output.txt | awk '{print $3}' | tr -d '\"')"
+        echo "resource_group_name=$(grep 'resource_group_name' apply_output.txt | awk '{print $3}' | tr -d '\"')" >> $GITHUB_ENV
+        echo "storage_account_name=$(grep 'storage_account_name' apply_output.txt | awk '{print $3}' | tr -d '\"')"
+        echo "storage_account_name=$(grep 'storage_account_name' apply_output.txt | awk '{print $3}' | tr -d '\"')" >> $GITHUB_OUTPUT
       working-directory: ./terraform
 
     # Troubleshooting step: Print the values of the environment variables
@@ -183,4 +184,4 @@ jobs:
         uses: azure/cli@v1
         with:
           inlineScript: |
-            az storage blob upload-batch -s website -d \$web --account-name $storage_account_name --auth-mode login
+            az storage blob upload-batch -s website -d \$web --account-name ${{ needs.terraform-apply.outputs.storage_account_name }} --auth-mode login
