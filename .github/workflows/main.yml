@@ -24,9 +24,6 @@ jobs:
   terraform-plan:
     name: 'Terraform Plan'
     runs-on: ubuntu-latest
-    defaults:
-        run:
-            working-directory: ./terraform
     env:
       ARM_SKIP_PROVIDER_REGISTRATION: true
     outputs:
@@ -46,11 +43,13 @@ jobs:
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
       run: terraform init
+      working-directory: ./terraform
 
     # Checks that all Terraform configuration files adhere to a canonical format
     # Will fail the build if not
     - name: Terraform Format
       run: terraform fmt -check
+      working-directory: ./terraform
 
     # Generates an execution plan for Terraform
     # An exit code of 0 indicated no changes, 1 a terraform failure, 2 there are pending changes.
@@ -68,6 +67,7 @@ jobs:
         else 
           exit 0
         fi
+      working-directory: ./terraform
         
     # Save plan to artifacts  
     - name: Publish Terraform Plan
@@ -92,6 +92,7 @@ jobs:
         echo '```' >> $GITHUB_OUTPUT
         echo "</details>" >> $GITHUB_OUTPUT
         echo "${delimiter}" >> $GITHUB_OUTPUT
+      working-directory: ./terraform
         
     # Publish Terraform Plan as task summary
     - name: Publish Terraform Plan to Task Summary
@@ -142,7 +143,6 @@ jobs:
       with:
         name: tfplan
         path: ./terraform/tfplan
-
 
     # Terraform Apply
     - name: Terraform Apply
