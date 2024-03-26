@@ -139,9 +139,9 @@ jobs:
     - name: Set Terraform Outputs
       id: tf-apply-outputs
       run: |
-        echo "storage_account_name=$(terraform output -raw storage_account_name)" >> $GITHUB_ENV
-        echo "primary_web_host=$(terraform output -raw primary_web_host)" >> $GITHUB_ENV
-        echo "resource_group_name=$(terraform output -raw resource_group_name)" >> $GITHUB_ENV
+        echo "::set-output name=primary_web_host::$(grep 'primary_web_host' apply_output.txt | awk '{print $3}')"
+        echo "::set-output name=resource_group_name::$(grep 'resource_group_name' apply_output.txt | awk '{print $3}')"
+        echo "::set-output name=storage_account_name::$(grep 'storage_account_name' apply_output.txt | awk '{print $3}')"
 
     # Troubleshooting step: Print the values of the environment variables
     - name: Print Environment Variables
