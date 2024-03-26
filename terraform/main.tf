@@ -55,3 +55,25 @@ resource "azurerm_cdn_endpoint" "cdn_endpoint" {
 
   querystring_caching_behaviour = "IgnoreQueryString"
 }
+
+# Get the Azure DNS Zone
+data "azurerm_dns_zone" "dns_zone" {
+  name                = var.azure_dns_zone_name
+  resource_group_name = var.azure_dns_zone_resource_group_name
+}
+
+# Create a DNS record for the CDN endpoint
+resource "azurerm_dns_cname_record" "cdn_dns_record" {
+  name                = var.custom_url_prefix
+  zone_name           = data.azurerm_dns_zone.dns_zone.name
+  resource_group_name = data.azurerm_dns_zone.dns_zone.resource_group_name
+  ttl                 = 300
+  target_resource_id  = azurerm_cdn_endpoint.cdn_endpoint.id
+}
+
+# Add Custom Domain to CDN Endpoint
+resource "azurerm_cdn_endpoint_custom_domain" "cdn_custom_domain" {
+  name            = "${var.custom_url_prefix}-custom-domain"
+  cdn_endpoint_id = azurerm_cdn_endpoint.cdn_endpoint.id
+  host_name       = "${azurerm_dns_cname_record.cdn_dns_record.name}.${azurerm_dns_cname_record.cdn_dns_record.zone_name}"
+}
