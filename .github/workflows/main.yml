@@ -102,8 +102,8 @@ jobs:
     name: 'Terraform Apply'
     runs-on: ubuntu-latest
     needs: [terraform-plan]
-    environment:
-      name: 'dev'
+    #environment:
+    #  name: 'dev'
     
     outputs:
       storage_account_name: ${{ steps.tf-apply-outputs.outputs.storage_account_name }}
@@ -135,11 +135,7 @@ jobs:
       run: terraform apply -auto-approve tfplan | tee apply_output.txt
       working-directory: ./terraform
 
-    # Debugging step: Print the contents of the apply_output.txt file
-    - name: Print apply_output.txt
-      run: cat ./terraform/apply_output.txt
-
-    # Set Terraform Outputs as environment variables
+    # Set Terraform Outputs
     - name: Set Terraform Outputs
       id: tf-apply-outputs
       shell: pwsh
@@ -148,20 +144,16 @@ jobs:
         "resource_group_name=$(((Select-String -Path ./apply_output.txt -Pattern 'resource_group_name').line -split '"')[1])" >> $env:GITHUB_OUTPUT
         "storage_account_name=$(((Select-String -Path ./apply_output.txt -Pattern 'storage_account_name').line -split '"')[1])" >> $env:GITHUB_OUTPUT
       working-directory: ./terraform
-
-    # Troubleshooting step: Print the values of the outputs from previous step
-    - name: Print outputs from previous steps
-      run: |
-        echo "storage_account_name: ${{ steps.tf-apply-outputs.outputs.storage_account_name }}"
-        echo "primary_web_host: ${{ steps.tf-apply-outputs.outputs.primary_web_host }}"
-        echo "resource_group_name: ${{ steps.tf-apply-outputs.outputs.resource_group_name }}"
   
   website-deploy:
     name: 'Deploy Website'
     runs-on: ubuntu-latest
     needs: [terraform-apply]
 
-    steps:      
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
       - name: Login to Azure
         id: LoginToAzure
         uses: azure/login@v1
@@ -170,13 +162,6 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           enable-AzPSSession: true
-      
-      # Troubleshooting step: Print the values of the environment variables 2
-      - name: Print Environment Variables 2
-        run: |
-          echo "storage_account_name: $storage_account_name"
-          echo "primary_web_host: $primary_web_host"
-          echo "resource_group_name: $resource_group_name"
 
       - name: Deploy to Azure Static Website
         uses: azure/cli@v1
