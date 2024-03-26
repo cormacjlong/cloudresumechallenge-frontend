@@ -128,14 +128,9 @@ jobs:
 
     # Terraform Apply
     - name: Terraform Apply
+      id: tf-apply
       run: terraform apply -auto-approve tfplan
       working-directory: ./terraform
-
-    # Save Storage Account name to environment variable
-    - name: Save Storage Account Name
-      id: storage-account-name
-      run: |
-        echo "storage_account_name=$(terraform output storage_account_name)" >> $env:GITHUB_ENV
   
   website-deploy:
     name: 'Deploy Website'
@@ -156,4 +151,4 @@ jobs:
         uses: azure/cli@v1
         with:
           inlineScript: |
-            az storage blob upload-batch -s website -d \$web --account-name ${{ needs.terraform-apply.outputs.storage_account_name }}
+            az storage blob upload-batch -s website -d \$web --account-name ${{ needs.terraform-apply.outputs.tf-apply.outputs.storage_account_name }} --auth-mode login
