@@ -5,7 +5,7 @@ data "azurerm_subscription" "current" {
 
 module "naming" {
   source      = "Azure/naming/azurerm"
-  suffix      = [var.project_prefix, var.env]
+  suffix      = [var.env, var.project_prefix]
   unique-seed = data.azurerm_subscription.current.subscription_id
 }
 
