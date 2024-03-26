@@ -135,13 +135,12 @@ jobs:
       run: terraform apply -auto-approve tfplan
       working-directory: ./terraform
 
-    # Send output of Terraform Apply to env variables
+    # Set Terraform Outputs as environment variables
     - name: Set Terraform Outputs
-      id: tf-apply-outputs
       run: |
-        echo "::set-output name=primary_web_host::$(grep 'primary_web_host' apply_output.txt | awk '{print $3}')"
-        echo "::set-output name=resource_group_name::$(grep 'resource_group_name' apply_output.txt | awk '{print $3}')"
-        echo "::set-output name=storage_account_name::$(grep 'storage_account_name' apply_output.txt | awk '{print $3}')"
+        echo "primary_web_host=$(grep 'primary_web_host' apply_output.txt | awk '{print $3}')" >> $GITHUB_ENV
+        echo "resource_group_name=$(grep 'resource_group_name' apply_output.txt | awk '{print $3}')" >> $GITHUB_ENV
+        echo "storage_account_name=$(grep 'storage_account_name' apply_output.txt | awk '{print $3}')" >> $GITHUB_ENV
 
     # Troubleshooting step: Print the values of the environment variables
     - name: Print Environment Variables
