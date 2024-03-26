@@ -172,6 +172,13 @@ jobs:
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           enable-AzPSSession: true
       
+      # Troubleshooting step: Print the values of the environment variables 2
+      - name: Print Environment Variables 2
+        run: |
+          echo "storage_account_name: $storage_account_name"
+          echo "primary_web_host: $primary_web_host"
+          echo "resource_group_name: $resource_group_name"
+
       - name: Deploy to Azure Static Website
         uses: azure/cli@v1
         with:
