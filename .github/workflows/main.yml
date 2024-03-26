@@ -135,6 +135,10 @@ jobs:
       run: terraform apply -auto-approve tfplan | tee apply_output.txt
       working-directory: ./terraform
 
+    # Debugging step: Print the contents of the apply_output.txt file
+    - name: Print apply_output.txt
+      run: cat ./terraform/apply_output.txt
+
     # Set Terraform Outputs as environment variables
     - name: Set Terraform Outputs
       run: |
