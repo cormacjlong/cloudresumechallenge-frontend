@@ -48,7 +48,7 @@ resource "azurerm_cdn_endpoint" "cdn_endpoint" {
 
   origin {
     name      = "${azurerm_storage_account.storage_account.name}-origin"
-    host_name = azurerm_storage_account.storage_account.primary_web_endpoint
+    host_name = azurerm_storage_account.storage_account.primary_web_host
   }
 
   querystring_caching_behaviour = "IgnoreQueryString"
