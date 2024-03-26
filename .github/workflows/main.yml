@@ -142,12 +142,12 @@ jobs:
     # Set Terraform Outputs as environment variables
     - name: Set Terraform Outputs
       run: |
-        echo "primary_web_host=$(grep '^primary_web_host' apply_output.txt | awk '{print $4}')"
-        echo "primary_web_host=$(grep '^primary_web_host' apply_output.txt | awk '{print $4}')" >> $GITHUB_ENV
-        echo "resource_group_name=$(grep '^resource_group_name' apply_output.txt | awk '{print $4}')"
-        echo "resource_group_name=$(grep '^resource_group_name' apply_output.txt | awk '{print $4}')" >> $GITHUB_ENV
-        echo "storage_account_name=$(grep '^storage_account_name' apply_output.txt | awk '{print $4}')"
-        echo "storage_account_name=$(grep '^storage_account_name' apply_output.txt | awk '{print $4}')" >> $GITHUB_ENV
+        echo "primary_web_host=$(grep '^primary_web_host' apply_output.txt | awk '{print $4$5}' | tr -d '\"')"
+        echo "primary_web_host=$(grep '^primary_web_host' apply_output.txt | awk '{print $4$5}' | tr -d '\"')"
+        echo "resource_group_name=$(grep '^resource_group_name' apply_output.txt | awk '{print $4$5}' | tr -d '\"')"
+        echo "resource_group_name=$(grep '^resource_group_name' apply_output.txt | awk '{print $4$5}' | tr -d '\"')"
+        echo "storage_account_name=$(grep '^storage_account_name' apply_output.txt | awk '{print $4$5}' | tr -d '\"')"
+        echo "storage_account_name=$(grep '^storage_account_name' apply_output.txt | awk '{print $4$5}' | tr -d '\"')"
       working-directory: ./terraform
 
     # Troubleshooting step: Print the values of the environment variables
