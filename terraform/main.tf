@@ -30,16 +30,6 @@ resource "azurerm_storage_account" "storage_account" {
     index_document = "index.html"
   }
 
-  blob_properties {
-    cors_rule {
-      allowed_headers    = ["*"]
-      allowed_methods    = ["*"]
-      allowed_origins    = ["${azurerm_cdn_endpoint.cdn_endpoint.host_name}"]
-      exposed_headers    = ["*"]
-      max_age_in_seconds = 200
-    }
-  }
-
 }
 
 # Create a CDN profile to front the storage account
@@ -56,6 +46,7 @@ resource "azurerm_cdn_endpoint" "cdn_endpoint" {
   profile_name        = azurerm_cdn_profile.cdn_profile.name
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
+  origin_host_header  = azurerm_storage_account.storage_account.primary_web_host
 
   origin {
     name      = "${azurerm_storage_account.storage_account.name}-origin"
