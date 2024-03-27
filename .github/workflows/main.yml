@@ -132,7 +132,12 @@ jobs:
     # Terraform Apply
     - name: Terraform Apply
       id: tf-apply
-      run: terraform apply -auto-approve tfplan | tee apply_output.txt
+      run:  |
+        terraform apply -auto-approve tfplan | tee apply_output.txt
+        if [ ${PIPESTATUS[0]} -ne 0 ]; then
+          echo "Terraform Apply failed."
+          exit 1
+        fi
       working-directory: ./terraform
 
     # Set Terraform Outputs
