@@ -11,7 +11,7 @@ output "primary_web_host" {
 }
 
 output "cdn_endpoint" {
-  value = azurerm_cdn_endpoint.cdn_endpoint.host_name
+  value = azurerm_cdn_endpoint.cdn_endpoint.name
 }
 
 output "cdn_profile_name" {
