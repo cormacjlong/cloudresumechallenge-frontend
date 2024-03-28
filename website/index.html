@@ -245,7 +245,6 @@
             document.addEventListener('DOMContentLoaded', function () {
                 const updateVisitorCount = async () => {
                     try {
-                        // Replace the URL with your Azure Function endpoint
                         const url = 'https://func-dev-crcbackend-b7a8.azurewebsites.net/api/visitorcounter';
                         const response = await fetch(url);
                         if (response.ok) {
