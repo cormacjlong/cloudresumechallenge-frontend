@@ -178,4 +178,4 @@ jobs:
 
       - name: Purge CDN endpoint
         run: |
-          az cdn endpoint purge -n ${{ needs.terraform-apply.outputs.cdn_endpoint }} --profile-name ${{ needs.terraform-apply.outputs.cdn_profile_name }} --content-paths "/*" --resource-group ${{ needs.terraform-apply.outputs.storage_account_name }} --no-wait
+          az cdn endpoint purge -n ${{ needs.terraform-apply.outputs.cdn_endpoint }} --profile-name ${{ needs.terraform-apply.outputs.cdn_profile_name }} --content-paths "/*" --resource-group ${{ needs.terraform-apply.outputs.resource_group_name }} --no-wait
