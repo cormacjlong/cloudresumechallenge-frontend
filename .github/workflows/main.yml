@@ -148,6 +148,8 @@ jobs:
         "primary_web_host=$(((Select-String -Path ./apply_output.txt -Pattern 'primary_web_host').line -split '"')[1])" >> $env:GITHUB_OUTPUT
         "resource_group_name=$(((Select-String -Path ./apply_output.txt -Pattern 'resource_group_name').line -split '"')[1])" >> $env:GITHUB_OUTPUT
         "storage_account_name=$(((Select-String -Path ./apply_output.txt -Pattern 'storage_account_name').line -split '"')[1])" >> $env:GITHUB_OUTPUT
+        "cdn_endpoint=$(((Select-String -Path ./apply_output.txt -Pattern 'cdn_endpoint').line -split '"')[1])" >> $env:GITHUB_OUTPUT
+        "cdn_profile_name=$(((Select-String -Path ./apply_output.txt -Pattern 'cdn_profile_name').line -split '"')[1])" >> $env:GITHUB_OUTPUT
       working-directory: ./terraform
   
   website-deploy:
@@ -173,3 +175,7 @@ jobs:
         with:
           inlineScript: |
             az storage blob upload-batch -s ./website -d \$web --account-name ${{ needs.terraform-apply.outputs.storage_account_name }} --overwrite
+
+      - name: Purge CDN endpoint
+        run: |
+          az cdn endpoint purge -n ${{ needs.terraform-apply.outputs.cdn_endpoint }} --profile-name ${{ needs.terraform-apply.outputs.cdn_profile_name }} --content-paths "/*" --resource-group ${{ needs.terraform-apply.outputs.storage_account_name }} --no-wait
