@@ -240,25 +240,35 @@
         </div>
     </div>
     <footer>
-        <p>CV has been viewed <span id="visitorCount">XX</span> times.</p>
+        <p>CV has been viewed <span id="visitorCount"> times.</p>
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 const updateVisitorCount = async () => {
                     try {
-                        const url = 'https://func-dev-crcbackend-b7a8.azurewebsites.net/api/visitorcounter';
-                        const response = await fetch(url);
-                        if (response.ok) {
-                            const data = await response.text();
-                            document.getElementById('visitorCount').textContent = data;
-                        } else {
-                            console.error('Failed to fetch visitor count:', response.statusText);
+                        // Only proceed if the count hasn't been incremented this session
+                        if (!sessionStorage.getItem('visitorCountIncremented')) {
+                            const url = 'https://func-dev-crcbackend-b7a8.azurewebsites.net/api/visitorcounter';
+                            const response = await fetch(url);
+                            if (response.ok) {
+                                const data = await response.text();
+                                document.getElementById('visitorCount').textContent = data;
+                                // Mark that the visitor count has been incremented for this session
+                                sessionStorage.setItem('visitorCountIncremented', 'true');
+                            } else {
+                                console.error('Failed to fetch visitor count:', response.statusText);
+                            }
                         }
                     } catch (error) {
                         console.error('Error fetching visitor count:', error);
                     }
                 };
 
-                updateVisitorCount();
+                // Call updateVisitorCount only if the session doesn't already have it marked as incremented
+                if (!sessionStorage.getItem('visitorCountIncremented')) {
+                    updateVisitorCount();
+                } else {
+                    console.log('Visitor count already incremented in this session.');
+                }
             });
         </script>
     </footer>
