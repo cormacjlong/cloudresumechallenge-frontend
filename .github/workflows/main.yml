@@ -107,6 +107,9 @@ jobs:
     
     outputs:
       storage_account_name: ${{ steps.tf-apply-outputs.outputs.storage_account_name }}
+      resource_group_name: ${{ steps.tf-apply-outputs.outputs.resource_group_name }}
+      cdn_endpoint: ${{ steps.tf-apply-outputs.outputs.cdn_endpoint }}
+      cdn_profile_name: ${{ steps.tf-apply-outputs.outputs.cdn_profile_name }}
     
     steps:
     # Checkout the repository to the GitHub Actions runner
