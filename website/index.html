@@ -240,34 +240,40 @@
         </div>
     </div>
     <footer>
-        <p>CV has been viewed <span id="visitorCount"> times.</p>
+        <p>CV has been viewed <span id="visitorCount"></span> times.</p>
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 const updateVisitorCount = async () => {
                     try {
-                        // Only proceed if the count hasn't been incremented this session
-                        if (!sessionStorage.getItem('visitorCountIncremented')) {
-                            const url = 'https://func-dev-crcbackend-b7a8.azurewebsites.net/api/visitorcounter';
-                            const response = await fetch(url);
-                            if (response.ok) {
-                                const data = await response.text();
-                                document.getElementById('visitorCount').textContent = data;
-                                // Mark that the visitor count has been incremented for this session
-                                sessionStorage.setItem('visitorCountIncremented', 'true');
-                            } else {
-                                console.error('Failed to fetch visitor count:', response.statusText);
-                            }
+                        const url = 'https://func-dev-crcbackend-b7a8.azurewebsites.net/api/visitorcounter';
+                        const response = await fetch(url);
+                        if (response.ok) {
+                            const data = await response.text();
+                            document.getElementById('visitorCount').textContent = data;
+                            // Store the current visitor count in session storage
+                            sessionStorage.setItem('currentVisitorCount', data);
+                            // Mark that the visitor count has been incremented for this session
+                            sessionStorage.setItem('visitorCountIncremented', 'true');
+                        } else {
+                            console.error('Failed to fetch visitor count:', response.statusText);
                         }
                     } catch (error) {
                         console.error('Error fetching visitor count:', error);
                     }
                 };
 
-                // Call updateVisitorCount only if the session doesn't already have it marked as incremented
+                // Check if the visitor count has been incremented in this session
                 if (!sessionStorage.getItem('visitorCountIncremented')) {
                     updateVisitorCount();
                 } else {
-                    console.log('Visitor count already incremented in this session.');
+                    // Retrieve and display the current visitor count from session storage
+                    const currentCount = sessionStorage.getItem('currentVisitorCount');
+                    if (currentCount !== null) {
+                        document.getElementById('visitorCount').textContent = currentCount;
+                    } else {
+                        // Handle the case where the current count is not in session storage
+                        console.log('Current visitor count is not available in session storage.');
+                    }
                 }
             });
         </script>
