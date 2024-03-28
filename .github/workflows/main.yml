@@ -102,8 +102,8 @@ jobs:
     name: 'Terraform Apply'
     runs-on: ubuntu-latest
     needs: [terraform-plan]
-    environment:
-      name: 'dev'
+    # environment:
+    #   name: 'dev'
     
     outputs:
       storage_account_name: ${{ steps.tf-apply-outputs.outputs.storage_account_name }}
