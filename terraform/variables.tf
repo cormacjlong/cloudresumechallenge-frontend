@@ -11,9 +11,9 @@ variable "project_prefix" {
 }
 
 variable "env" {
-  type        = string
+  type        = list(string)
   description = "The environment currently being deployed."
-  default     = "dev"
+  default     = ["dev"]
 }
 
 variable "custom_url_prefix" {
