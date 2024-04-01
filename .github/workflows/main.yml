@@ -173,7 +173,7 @@ jobs:
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           enable-AzPSSession: true
 
-      - name: Deploy to Azure Static Website
+      - name: Deploy to Azure Storage Static Website
         uses: azure/cli@v1
         with:
           inlineScript: |
