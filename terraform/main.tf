@@ -81,4 +81,5 @@ resource "azurerm_cdn_endpoint_custom_domain" "cdn_custom_domain" {
     protocol_type    = "ServerNameIndication"
     tls_version      = "TLS12"
   }
+  depends_on = [azurerm_dns_cname_record.cdn_dns_record]
 }
