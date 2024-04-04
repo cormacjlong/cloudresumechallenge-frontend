@@ -31,5 +31,5 @@ variable "azure_dns_zone_name" {
 variable "azure_dns_zone_resource_group_name" {
   type        = string
   description = "The name of the resource group the the Azure DNS zone is in."
-  default     = "rg-connectivity"
+  default     = "rg-platform-connectivity"
 }
