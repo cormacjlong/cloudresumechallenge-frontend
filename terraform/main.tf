@@ -2,6 +2,15 @@ data "azurerm_client_config" "current" {}
 
 data "azurerm_subscription" "current" {}
 
+resource "azurerm_resource_provider_registration" "disableCdnCnameError" {
+  name = "Microsoft.Cdn"
+
+  feature {
+    name =     "BypassCnameCheckForCustomDomainDeletion"
+    registered = true
+  }
+}
+
 # Naming module to ensure all resources have naming standard applied
 module "naming" {
   source      = "Azure/naming/azurerm"
