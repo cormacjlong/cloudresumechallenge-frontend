@@ -11,7 +11,7 @@ resource "azurerm_resource_provider_registration" "disableCdnCnameError" {
   }
 }
 
-# Naming module to ensure all resources have naming standard applied
+# Naming module to ensure all resources have naming standard applied.
 module "naming" {
   source      = "Azure/naming/azurerm"
   suffix      = concat(var.env, var.project_prefix)
