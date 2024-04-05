@@ -192,5 +192,5 @@ jobs:
         with:
           inlineScript: |
             if((Get-AzProviderFeature -ProviderNamespace Microsoft.Cdn -FeatureName BypassCnameCheckForCustomDomainDeletion).RegistrationState -eq 'NotRegistered'){Register-AzProviderFeature -ProviderNamespace Microsoft.Cdn -FeatureName BypassCnameCheckForCustomDomainDeletion}
-        azPSVersion: "latest"
+          azPSVersion: "latest"
           
