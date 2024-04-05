@@ -6,7 +6,7 @@ resource "azurerm_resource_provider_registration" "disableCdnCnameError" {
   name = "Microsoft.Cdn"
 
   feature {
-    name =     "BypassCnameCheckForCustomDomainDeletion"
+    name       = "BypassCnameCheckForCustomDomainDeletion"
     registered = true
   }
 }
