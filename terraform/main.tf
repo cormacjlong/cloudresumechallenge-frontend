@@ -75,11 +75,10 @@ resource "azurerm_dns_cname_record" "cdn_dns_record" {
 resource "azurerm_cdn_endpoint_custom_domain" "cdn_custom_domain" {
   name            = "${var.custom_url_prefix}-custom-domain"
   cdn_endpoint_id = azurerm_cdn_endpoint.cdn_endpoint.id
-  host_name       = "${var.custom_url_prefix}.${var.azure_dns_zone_name}"
+  host_name       = azurerm_dns_cname_record.cdn_dns_record.fqdn
   cdn_managed_https {
     certificate_type = "Dedicated"
     protocol_type    = "ServerNameIndication"
     tls_version      = "TLS12"
   }
-  depends_on = [azurerm_dns_cname_record.cdn_dns_record]
 }
