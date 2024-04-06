@@ -2,7 +2,7 @@ data "azurerm_client_config" "current" {}
 
 data "azurerm_subscription" "current" {}
 
-# Naming module to ensure all resources have naming standard applied.
+# Naming module to ensure all resources have naming standard applied
 module "naming" {
   source      = "Azure/naming/azurerm"
   suffix      = concat(var.env, var.project_prefix)
