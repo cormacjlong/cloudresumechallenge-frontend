@@ -67,7 +67,7 @@ resource "azurerm_dns_cname_record" "cdn_dns_record" {
   name                = var.custom_url_prefix
   zone_name           = data.azurerm_dns_zone.dns_zone.name
   resource_group_name = data.azurerm_dns_zone.dns_zone.resource_group_name
-  ttl                 = 300
+  ttl                 = 3600
   target_resource_id  = azurerm_cdn_endpoint.cdn_endpoint.id
 }
 

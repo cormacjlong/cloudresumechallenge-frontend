@@ -187,7 +187,7 @@ jobs:
         run: |
           az cdn endpoint purge -n ${{ needs.terraform-apply.outputs.cdn_endpoint }} --profile-name ${{ needs.terraform-apply.outputs.cdn_profile_name }} --content-paths "/*" --resource-group ${{ needs.terraform-apply.outputs.resource_group_name }} --no-wait
       
-      - name: Run Azure PowerShell inline script
+      - name: Bypass CNAME check for custom domain deletion
         uses: azure/powershell@v2
         with:
           inlineScript: |
