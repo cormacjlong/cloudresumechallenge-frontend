@@ -33,3 +33,9 @@ variable "azure_dns_zone_resource_group_name" {
   description = "The name of the resource group the the Azure DNS zone is in."
   default     = "rg-platform-connectivity"
 }
+
+variable "logging_on" {
+  type        = bool
+  description = "Turning this on will create a Log Analytics Workspace and configure logging for resources."
+  default     = false
+}
