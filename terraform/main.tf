@@ -2,6 +2,10 @@ data "azurerm_client_config" "current" {}
 
 data "azurerm_subscription" "current" {}
 
+locals {
+  custom_url_prefix_full = var.env == "prod" ? var.custom_url_prefix : "${var.custom_url_prefix}-${var.env[0]}"
+}
+
 # Naming module to ensure all resources have naming standard applied
 module "naming" {
   source      = "Azure/naming/azurerm"
@@ -64,7 +68,7 @@ data "azurerm_dns_zone" "dns_zone" {
 
 # Create a DNS record for the CDN endpoint
 resource "azurerm_dns_cname_record" "cdn_dns_record" {
-  name                = var.custom_url_prefix
+  name                = local.custom_url_prefix_full
   zone_name           = data.azurerm_dns_zone.dns_zone.name
   resource_group_name = data.azurerm_dns_zone.dns_zone.resource_group_name
   ttl                 = 3600
@@ -73,7 +77,7 @@ resource "azurerm_dns_cname_record" "cdn_dns_record" {
 
 # Add Custom Domain to CDN Endpoint
 resource "azurerm_cdn_endpoint_custom_domain" "cdn_custom_domain" {
-  name            = "${var.custom_url_prefix}-custom-domain"
+  name            = "${local.custom_url_prefix_full}-custom-domain"
   cdn_endpoint_id = azurerm_cdn_endpoint.cdn_endpoint.id
   host_name       = substr(azurerm_dns_cname_record.cdn_dns_record.fqdn, 0, length(azurerm_dns_cname_record.cdn_dns_record.fqdn) - 1)
   cdn_managed_https {
