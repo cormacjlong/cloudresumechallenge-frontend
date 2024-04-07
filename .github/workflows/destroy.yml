@@ -26,6 +26,23 @@ jobs:
     #   name: 'dev'
     
     steps:
+    - name: Login to Azure
+      id: LoginToAzure
+      uses: azure/login@v2
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        enable-AzPSSession: true
+
+    # Register Bypass CNAME check for custom domain deletion, so that custom domain can be deleted
+    - name: Add Bypass CNAME check for custom domain deletion
+      uses: azure/powershell@v2
+      with:
+        inlineScript: |
+          Register-AzProviderFeature -ProviderNamespace Microsoft.Cdn -FeatureName BypassCnameCheckForCustomDomainDeletion
+        azPSVersion: "latest"
+
     # Checkout the repository to the GitHub Actions runner
     - name: Checkout
       uses: actions/checkout@v3
@@ -49,3 +66,10 @@ jobs:
           exit 1
         fi
       working-directory: ./terraform
+    
+    - name: Remove Bypass CNAME check for custom domain deletion
+      uses: azure/powershell@v2
+      with:
+        inlineScript: |
+          Unregister-AzProviderFeature -ProviderNamespace Microsoft.Cdn -FeatureName BypassCnameCheckForCustomDomainDeletion
+        azPSVersion: "latest"
