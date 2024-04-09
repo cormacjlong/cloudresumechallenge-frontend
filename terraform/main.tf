@@ -29,6 +29,7 @@ resource "azurerm_storage_account" "storage_account" {
   account_tier             = "Standard"
   account_replication_type = "LRS"
   account_kind             = "StorageV2"
+  min_tls_version          = "TLS1_2"
 
   static_website {
     index_document = "index.html"
