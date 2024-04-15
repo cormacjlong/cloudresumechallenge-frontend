@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     const updateVisitorCount = async () => {
         try {
-            const url = 'https://cv-dev-api.az.macro-c.com/api/getvisitor';
+            const url = 'https://cv-dev-api.az.macro-c.com/';
             // Check if we already have a count for this session
             const storedCount = sessionStorage.getItem('currentVisitorCount');
             if (storedCount) {
