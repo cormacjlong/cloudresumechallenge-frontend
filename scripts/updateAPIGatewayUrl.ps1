@@ -4,11 +4,11 @@ Param(
     $ApiGatewayUrl = "https://domain.com/api/"
 )
 
-# Variables
+# Variables.
 $relativePathToJavascriptFile = "../website/script.js"
 
 try{
-    # Read Javascript file and replace the API Gateway URL
+    # Read Javascript file and replace the API Gateway URL.
     $jsScript = (Get-Content -Path $relativePathToJavascriptFile) -replace "const url = '.*?'", "const url = '$($ApiGatewayUrl)'"
 }
 catch {
@@ -16,7 +16,7 @@ catch {
 }
 
 try {
-    # Modify the Javascript file
+    # Modify the Javascript file.
     $jsScript | Set-Content -Path $relativePathToJavascriptFile
     Write-Output "Updated the API Gateway URL in the Javascript file to: $ApiGatewayUrl"
 }
