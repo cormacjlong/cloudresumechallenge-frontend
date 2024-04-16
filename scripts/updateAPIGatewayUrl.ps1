@@ -5,7 +5,7 @@ Param(
 )
 
 # Variables.
-$relativePathToJavascriptFile = "../website/script.js"
+$relativePathToJavascriptFile = "website/script.js"
 
 try{
     # Read Javascript file and replace the API Gateway URL.
