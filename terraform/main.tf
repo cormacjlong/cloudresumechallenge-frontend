@@ -3,7 +3,8 @@ data "azurerm_client_config" "current" {}
 data "azurerm_subscription" "current" {}
 
 locals {
-  custom_url_prefix_full = var.env == "prod" ? var.custom_url_prefix : "${var.custom_url_prefix}-${var.env[0]}"
+  custom_url_prefix_full     = var.env == "prod" ? var.custom_url_prefix : "${var.custom_url_prefix}-${var.env[0]}"
+  api_custom_url_prefix_full = var.env == "prod" ? "${var.custom_url_prefix}-api" : "${var.custom_url_prefix}-${var.env[0]}-api"
 }
 
 # Naming module to ensure all resources have naming standard applied
@@ -85,5 +86,19 @@ resource "azurerm_cdn_endpoint_custom_domain" "cdn_custom_domain" {
     certificate_type = "Dedicated"
     protocol_type    = "ServerNameIndication"
     tls_version      = "TLS12"
+  }
+}
+
+# Update the Custom Domain URL for API in Javascript script
+resource "null_resource" "javascript_custom_domain" {
+  triggers = {
+    api_custom_url = "${local.api_custom_url_prefix_full}.${var.azure_dns_zone_name}"
+    script_hash    = "${sha256(var.path_to_script_updateapigatwayurl)}"
+    script_path    = var.path_to_script_updateapigatwayurl
+  }
+
+  provisioner "local-exec" {
+    command     = "${self.triggers.script_path} -ApiGatewayUrl ${self.triggers.api_custom_url}"
+    interpreter = ["pwsh", "-Command"]
   }
 }
