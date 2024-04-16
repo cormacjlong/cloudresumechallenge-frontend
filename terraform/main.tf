@@ -93,7 +93,7 @@ resource "azurerm_cdn_endpoint_custom_domain" "cdn_custom_domain" {
 resource "null_resource" "javascript_custom_domain" {
   triggers = {
     api_custom_url = "${local.api_custom_url_prefix_full}.${var.azure_dns_zone_name}"
-    script_hash    = "${sha256(var.path_to_script_updateapigatwayurl)}"
+    script_hash    = filesha256(var.path_to_script_updateapigatwayurl)
     script_path    = var.path_to_script_updateapigatwayurl
   }
 
