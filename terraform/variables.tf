@@ -43,5 +43,5 @@ variable "logging_on" {
 variable "path_to_script_updateapigatwayurl" {
   type        = string
   description = "This is the relative path to the updateApiGatewayurl powershell script in the repo."
-  default     = "scripts/updateApiGatewayUrl.ps1"
+  default     = "../scripts/updateApiGatewayUrl.ps1"
 }
