@@ -17,3 +17,7 @@ output "cdn_endpoint" {
 output "cdn_profile_name" {
   value = azurerm_cdn_profile.cdn_profile.name
 }
+
+output "api_custom_domain_url" {
+  value = "https://${local.api_custom_url_prefix_full}.${var.azure_dns_zone_name}/api/getvisitor"
+}

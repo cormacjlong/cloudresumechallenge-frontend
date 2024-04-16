@@ -175,7 +175,13 @@ jobs:
         "storage_account_name=$(((Select-String -Path ./apply_output.txt -Pattern 'storage_account_name ').line -split '"')[1])" >> $env:GITHUB_OUTPUT
         "cdn_endpoint=$(((Select-String -Path ./apply_output.txt -Pattern 'cdn_endpoint ').line -split '"')[1])" >> $env:GITHUB_OUTPUT
         "cdn_profile_name=$(((Select-String -Path ./apply_output.txt -Pattern 'cdn_profile_name ').line -split '"')[1])" >> $env:GITHUB_OUTPUT
+        "api_custom_domain_url=$(((Select-String -Path ./apply_output.txt -Pattern 'api_custom_domain_url ').line -split '"')[1])" >> $env:GITHUB_OUTPUT
       working-directory: ./terraform
+
+    - name: Rewrite API URL in Javascript file
+      shell: pwsh
+      run: |
+        "../scripts/updateAPIGatewayUrl.ps1 -ApiGatewayUrl ${{ steps.tf-apply-outputs.outputs.api_custom_domain_url }}"
 
     - name: Deploy to Azure Storage Static Website
       uses: azure/cli@v1
