@@ -98,7 +98,6 @@ resource "null_resource" "javascript_custom_domain" {
   }
 
   provisioner "local-exec" {
-    command     = self.triggers.script_path
-    interpreter = ["pwsh", "-File", self.triggers.api_custom_url]
+    command = "pwsh -file ${self.triggers.script_path} -ApiGatewayUrl ${self.triggers.api_custom_url}"
   }
 }
