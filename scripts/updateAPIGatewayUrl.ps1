@@ -1,3 +1,4 @@
+#!/usr/bin/env pwsh
 [CmdletBinding()]
 Param(
     $ApiGatewayUrl = "https://cv-dev-api.az.macro-c.com/"
