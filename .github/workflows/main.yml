@@ -181,8 +181,7 @@ jobs:
     - name: Rewrite API URL in Javascript file
       shell: pwsh
       run: |
-        "dir"
-        "./scripts/updateAPIGatewayUrl.ps1 -ApiGatewayUrl ${{ steps.tf-apply-outputs.outputs.api_custom_domain_url }}"
+        ./scripts/updateAPIGatewayUrl.ps1 -ApiGatewayUrl ${{ steps.tf-apply-outputs.outputs.api_custom_domain_url }}
 
     - name: Deploy to Azure Storage Static Website
       uses: azure/cli@v1
