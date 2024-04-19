@@ -191,7 +191,7 @@ jobs:
 
     - name: Purge CDN endpoint
       run: |
-        az login --identity
+        az login
         az cdn endpoint purge -n ${{ steps.tf-apply-outputs.outputs.cdn_endpoint }} --profile-name ${{ steps.tf-apply-outputs.outputs.cdn_profile_name }} --content-paths "/*" --resource-group ${{ steps.tf-apply-outputs.outputs.resource_group_name }} --no-wait
     
     - name: Remove Bypass CNAME check for custom domain deletion
