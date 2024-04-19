@@ -187,6 +187,7 @@ jobs:
       uses: azure/cli@v1
       with:
         inlineScript: |
+          az login
           az storage blob upload-batch -s ./website -d \$web --account-name ${{ steps.tf-apply-outputs.outputs.storage_account_name }} --overwrite
 
     - name: Purge CDN endpoint
