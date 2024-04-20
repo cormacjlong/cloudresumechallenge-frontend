@@ -88,16 +88,3 @@ resource "azurerm_cdn_endpoint_custom_domain" "cdn_custom_domain" {
     tls_version      = "TLS12"
   }
 }
-
-# # Update the Custom Domain URL for API in Javascript script
-# resource "null_resource" "javascript_custom_domain" {
-#   triggers = {
-#     api_custom_url = "https://${local.api_custom_url_prefix_full}.${var.azure_dns_zone_name}/api/getvisitor"
-#     script_hash    = filesha256(var.path_to_script_updateapigatwayurl)
-#     script_path    = var.path_to_script_updateapigatwayurl
-#   }
-
-#   provisioner "local-exec" {
-#     command = "pwsh -command \"${self.triggers.script_path} -ApiGatewayUrl ${self.triggers.api_custom_url}\""
-#   }
-# }
