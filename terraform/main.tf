@@ -77,6 +77,12 @@ resource "azurerm_dns_cname_record" "cdn_dns_record" {
   target_resource_id  = azurerm_cdn_endpoint.cdn_endpoint.id
 }
 
+# Add a delay before creation of Custom Domain to allow DNS record to propagate
+resource "time_sleep" "wait_10_seconds" {
+  depends_on      = [azurerm_dns_cname_record.cdn_dns_record]
+  create_duration = "10s"
+}
+
 # Add Custom Domain to CDN Endpoint
 resource "azurerm_cdn_endpoint_custom_domain" "cdn_custom_domain" {
   name            = "${local.custom_url_prefix_full}-custom-domain"
@@ -87,4 +93,5 @@ resource "azurerm_cdn_endpoint_custom_domain" "cdn_custom_domain" {
     protocol_type    = "ServerNameIndication"
     tls_version      = "TLS12"
   }
+  depends_on = [time_sleep.wait_10_seconds]
 }
