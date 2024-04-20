@@ -185,7 +185,8 @@ jobs:
 
     - name: Deploy to Azure Storage Static Website
       run: |
-          az storage blob upload-batch -s ./website -d \$web --account-name ${{ steps.tf-apply-outputs.outputs.storage_account_name }} --overwrite
+        az login
+        az storage blob upload-batch -s ./website -d \$web --account-name ${{ steps.tf-apply-outputs.outputs.storage_account_name }} --overwrite
 
     - name: Purge CDN endpoint
       run: |
