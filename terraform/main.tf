@@ -94,4 +94,5 @@ resource "azurerm_cdn_endpoint_custom_domain" "cdn_custom_domain" {
     tls_version      = "TLS12"
   }
   depends_on = [time_sleep.wait_30_seconds]
+
 }
