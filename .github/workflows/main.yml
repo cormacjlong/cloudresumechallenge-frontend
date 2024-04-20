@@ -184,12 +184,18 @@ jobs:
         ./scripts/updateAPIGatewayUrl.ps1 -ApiGatewayUrl ${{ steps.tf-apply-outputs.outputs.api_custom_domain_url }}
 
     - name: Deploy to Azure Storage Static Website
-      run: |
-        az storage blob upload-batch -s ./website -d \$web --account-name ${{ steps.tf-apply-outputs.outputs.storage_account_name }} --overwrite
+      uses: azure/cli@v2
+      with:
+        azcliversion: 2.58.0
+        inlineScript: |
+          az storage blob upload-batch -s ./website -d \$web --account-name ${{ steps.tf-apply-outputs.outputs.storage_account_name }} --overwrite
 
     - name: Purge CDN endpoint
-      run: |
-        az cdn endpoint purge -n ${{ steps.tf-apply-outputs.outputs.cdn_endpoint }} --profile-name ${{ steps.tf-apply-outputs.outputs.cdn_profile_name }} --content-paths "/*" --resource-group ${{ steps.tf-apply-outputs.outputs.resource_group_name }} --no-wait
+      uses: azure/cli@v2
+      with:
+        azcliversion: 2.58.0
+        inlineScript: |
+          az cdn endpoint purge -n ${{ steps.tf-apply-outputs.outputs.cdn_endpoint }} --profile-name ${{ steps.tf-apply-outputs.outputs.cdn_profile_name }} --content-paths "/*" --resource-group ${{ steps.tf-apply-outputs.outputs.resource_group_name }} --no-wait
     
     - name: Remove Bypass CNAME check for custom domain deletion
       uses: azure/powershell@v2
