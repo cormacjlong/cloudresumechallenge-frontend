@@ -37,5 +37,5 @@ variable "azure_dns_zone_resource_group_name" {
 variable "logging_on" {
   type        = bool
   description = "Turning this on will create a Log Analytics Workspace and configure logging for resources."
-  default     = true
+  default     = false
 }
