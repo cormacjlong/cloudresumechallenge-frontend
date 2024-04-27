@@ -5,6 +5,12 @@ data "azurerm_subscription" "current" {}
 locals {
   custom_url_prefix_full     = var.env == "prod" ? var.custom_url_prefix : "${var.custom_url_prefix}-${var.env[0]}"
   api_custom_url_prefix_full = var.env == "prod" ? "${var.custom_url_prefix}-api" : "${var.custom_url_prefix}-${var.env[0]}-api"
+  common_tags = {
+    Environment        = var.env[0]
+    WorkloadName       = "CloudResumeChallenge"
+    DataClassification = "Public"
+    Criticality        = "Non-Critical"
+  }
 }
 
 # Naming module to ensure all resources have naming standard applied
@@ -15,15 +21,16 @@ module "naming" {
 }
 
 # Create a resource group to host the frontend resources
-resource "azurerm_resource_group" "rg" {
+resource "azurerm_resource_group" "this" {
   location = var.resource_location
   name     = module.naming.resource_group.name
+  tags     = local.common_tags
 }
 
 # Create a storage account to host the static website
-resource "azurerm_storage_account" "storage_account" {
-  resource_group_name = azurerm_resource_group.rg.name
-  location            = azurerm_resource_group.rg.location
+resource "azurerm_storage_account" "this" {
+  resource_group_name = azurerm_resource_group.this.name
+  location            = azurerm_resource_group.this.location
 
   name = module.naming.storage_account.name_unique
 
@@ -36,66 +43,69 @@ resource "azurerm_storage_account" "storage_account" {
     index_document = "index.html"
   }
 
+  tags = local.common_tags
 }
 
 # Create a CDN profile to front the storage account
-resource "azurerm_cdn_profile" "cdn_profile" {
+resource "azurerm_cdn_profile" "this" {
   name                = module.naming.cdn_profile.name_unique
-  resource_group_name = azurerm_resource_group.rg.name
-  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.this.name
+  location            = azurerm_resource_group.this.location
   sku                 = "Standard_Microsoft"
+  tags                = local.common_tags
 }
 
 # Create a CDN endpoint to front the storage account
-resource "azurerm_cdn_endpoint" "cdn_endpoint" {
+resource "azurerm_cdn_endpoint" "this" {
   name                = module.naming.cdn_endpoint.name_unique
-  profile_name        = azurerm_cdn_profile.cdn_profile.name
-  resource_group_name = azurerm_resource_group.rg.name
-  location            = azurerm_resource_group.rg.location
-  origin_host_header  = azurerm_storage_account.storage_account.primary_web_host
+  profile_name        = azurerm_cdn_profile.this.name
+  resource_group_name = azurerm_resource_group.this.name
+  location            = azurerm_resource_group.this.location
+  origin_host_header  = azurerm_storage_account.this.primary_web_host
 
   origin {
-    name      = "${azurerm_storage_account.storage_account.name}-origin"
-    host_name = azurerm_storage_account.storage_account.primary_web_host
+    name      = "${azurerm_storage_account.this.name}-origin"
+    host_name = azurerm_storage_account.this.primary_web_host
   }
 
   querystring_caching_behaviour = "IgnoreQueryString"
+  tags                          = local.common_tags
 }
 
 # Get the Azure DNS Zone
-data "azurerm_dns_zone" "dns_zone" {
+data "azurerm_dns_zone" "this" {
   name                = var.azure_dns_zone_name
   resource_group_name = var.azure_dns_zone_resource_group_name
 }
 
 # Create a DNS record for the CDN endpoint
-resource "azurerm_dns_cname_record" "cdn_dns_record" {
+resource "azurerm_dns_cname_record" "this" {
   name                = local.custom_url_prefix_full
-  zone_name           = data.azurerm_dns_zone.dns_zone.name
-  resource_group_name = data.azurerm_dns_zone.dns_zone.resource_group_name
+  zone_name           = data.azurerm_dns_zone.this.name
+  resource_group_name = data.azurerm_dns_zone.this.resource_group_name
   ttl                 = 3600
-  target_resource_id  = azurerm_cdn_endpoint.cdn_endpoint.id
+  target_resource_id  = azurerm_cdn_endpoint.this.id
+  tags                = local.common_tags
 }
 
 # Add a delay before creation of Custom Domain to allow DNS record to propagate
 resource "time_sleep" "wait_10_seconds" {
-  depends_on      = [azurerm_dns_cname_record.cdn_dns_record]
   create_duration = "10s"
   triggers = {
-    cname_record = azurerm_dns_cname_record.cdn_dns_record.fqdn
+    cname_record = azurerm_dns_cname_record.this.fqdn
   }
+  depends_on = [azurerm_dns_cname_record.this]
 }
 
 # Add Custom Domain to CDN Endpoint
-resource "azurerm_cdn_endpoint_custom_domain" "cdn_custom_domain" {
+resource "azurerm_cdn_endpoint_custom_domain" "this" {
   name            = "${local.custom_url_prefix_full}-custom-domain"
-  cdn_endpoint_id = azurerm_cdn_endpoint.cdn_endpoint.id
-  host_name       = substr(azurerm_dns_cname_record.cdn_dns_record.fqdn, 0, length(azurerm_dns_cname_record.cdn_dns_record.fqdn) - 1)
+  cdn_endpoint_id = azurerm_cdn_endpoint.this.id
+  host_name       = substr(azurerm_dns_cname_record.this.fqdn, 0, length(azurerm_dns_cname_record.this.fqdn) - 1)
   cdn_managed_https {
     certificate_type = "Dedicated"
     protocol_type    = "ServerNameIndication"
     tls_version      = "TLS12"
   }
   depends_on = [time_sleep.wait_10_seconds]
-
 }
