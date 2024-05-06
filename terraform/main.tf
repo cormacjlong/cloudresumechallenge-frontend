@@ -1,10 +1,10 @@
 data "azurerm_client_config" "current" {}
 
 locals {
-  custom_url_prefix_full     = var.env == "prod" ? var.custom_url_prefix : "${var.custom_url_prefix}-${var.env[0]}"
-  api_custom_url_prefix_full = var.env == "prod" ? "${var.custom_url_prefix}-api" : "${var.custom_url_prefix}-${var.env[0]}-api"
+  custom_url_prefix_full     = var.env == "prod" ? var.custom_url_prefix : "${var.custom_url_prefix}-${var.env}"
+  api_custom_url_prefix_full = var.env == "prod" ? "${var.custom_url_prefix}-api" : "${var.custom_url_prefix}-${var.env}-api"
   common_tags = {
-    Environment        = var.env[0]
+    Environment        = var.env
     WorkloadName       = "CloudResumeChallenge"
     DataClassification = "Public"
     Criticality        = "Non-Critical"
@@ -14,7 +14,7 @@ locals {
 # Naming module to ensure all resources have naming standard applied
 module "naming" {
   source      = "Azure/naming/azurerm"
-  suffix      = concat(var.env, var.project_prefix)
+  suffix      = concat([var.env], var.project_prefix)
   unique-seed = data.azurerm_client_config.current.subscription_id
   version     = "0.4.1"
 }
