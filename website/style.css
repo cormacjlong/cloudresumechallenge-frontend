@@ -1,198 +1,150 @@
-*, *:before, *:after {
-    -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
-   }
-  
-  html
-  {
-      font-size:100%;
-  }
-  
-  body
-  {
-      -webkit-font-smoothing:antialiased;
-      color:#333332;
-      font-family:Lora, serif;
-      font-size:18px;
-      font-weight:400;
-      line-height:1.4;
-      text-rendering:optimizeLegibility;
-  }
-  
-  .skill-set li:hover
-  {
-      background:#3498db;
-  }
-  
-  h1
-  {
-      color:rgba(0,0,0,.75);
-  }
-  
-  .wrapper
-  {
-      height:100%;
-  }
-  
-  .left
-  {
-      background-color:rgba(0,0,0,.025);
-      border-right:1px solid rgba(0,0,0,.05);
-      float:right;
-      height:100%;
-      margin-left:-1px;
-      min-width:256px;
-      position:fixed;
-      width:33.33%;
+// MIXINS
+// Dummy Variable
+$x = false;
+// The top, left, right, and bottom are optional
+setup(display, position, margin, top = null, right = null, bottom = null, left = null)  
+    display display
+    position position
+    margin margin
+    top top
+    left left
+    right right
+    bottom bottom
+        
+font(font-family, font-size, letter-spacing, font-weight, line-height = 1)
+    font-family font-family
+    font-size font-size
+    letter-spacing letter-spacing
+    font-weight font-weight
+    line-height line-height
+        
+// GENERAL FONTS AND CLASSES AND SETUP STUFF
+* {box-sizing: border-box; transition: 0.35s ease;}
     
-  }
-  
-  .right
-  {
-      float:right;
-      height:100%;
-      position:relative;
-      width:66.66%;
-  }
-  
-  
-  .name-hero
-  {
-      background:rgba(0,0,0,.001);
-      bottom:0;
-      height:290px;
-      left:0;
-      margin:auto;
-      position:absolute;
-      right:0;
-      top:0;
-      width:85%;
-  }
-  
-  .me-img
-  {
-      background:url(https://media-exp1.licdn.com/dms/image/C4E03AQGnLq_IB_mf8Q/profile-displayphoto-shrink_400_400/0/1631022739752?e=1648684800&v=beta&t=eICUjHeH_g9GQEItmEMK1j2gCADwqfjrlccSD_5za58) no-repeat center center ;
-      background-size:100%;
-    background-position:0px;
-      border-radius:100%;
-      height:150px;
-      margin:0 auto;
-      position:relative;
-      width:150px;
-  }
-  
-  .name-hero h1
-  {
-      font-family:Open Sans, sans-serif;
-      font-size:1.5em;
-      text-align:center;
-  }
-  
-  .name-hero h1 em
-  {
-      color:rgba(0,0,0,.3);
-      font-style:normal;
-      font-weight:700;
-  }
-  
-  .name-hero p
-  {
-      color:rgba(0,0,0,.75);
-      font-size:.75em;
-      line-height:1.5;
-      margin:0 8px 0 0;
-      text-align:center;
-  }
-  
-  .name-hero .name-text
-  {
-      margin:0 auto;
-      width:85%;
-  }
-  
-  .inner
-  {
-      margin:0 auto;
-      max-width:975px;
-      padding:3em;
-  }
-  
-  .inner h1
-  {
-      font-size:1.75em;
-  }
-  
-  .inner p
-  {
-      color:rgba(0,0,0,.5);
-  }
-  
-  .inner p em
-  {
-      color:rgba(0,0,0,1);
-      font-style:normal;
-  }
-  
-  .inner section
-  {
-      margin:100px auto;
-  }
-  
-  ul
-  {
-      list-style-type:none;
-      margin-top:-10px;
-      max-width:570px;
-      padding:0;
-  }
-  
-  .skill-set li
-  {
-      background:rgba(0,0,0,.75);
-      border-radius:5px;
-      color:#FFF;
-      display:inline-block;
-      list-style:none;
-      margin:15px 15px 0 0;
-      padding:10px;
-      text-align:justify;
-  }
-  
-  @media screen and (max-width: 48em) {
-      .right,.left
-      {
-          float:none;
-      position:relative !important;
-          width:100%;
-      min-height:500px;
-      }
-    .handmade {
-    text-align:center !important;
-    margin-top:0px !important;
-  }
-  
-  @media screen and (max-width: 75em) {
-      body
-  { font-size:16px;}
-  }
-  
-  @media screen and (max-width: 60em) {
-      body
-  { font-size:14px;}
-  }
-  .clearfix:after {
-     content: " "; /* Older browser do not support empty content */
-     visibility: hidden;
-     display: block;
-     height: 0;
-     clear: both;
-  }
-  .handmade {
-    text-align:right;
-    margin-top:100px;
-  }
-  .handmade em {
-    font-family: 'Shadows Into Light', cursive;
-    font-size: 1.25em;
-    margin-left:5px;
-  }
-}
+.rela-block
+    setup(block, relative, auto)
+.rela-inline
+    setup(inline-block, relative, auto)
+.floated
+    setup(inline-block, relative, $x)
+    float left
+    
+.abs-center
+    setup($x, absolute, $x, 50%, $x, $x, 50%)
+    transform translate(-50%, -50%)
+    text-align center
+    width 88%
+    
+// --- COLORS ---
+
+// --- PAGE STYLINGS ---
+body
+    font('Open Sans',18px,0px,400,28px)
+    background: url('http://kingofwallpapers.com/leaves/leaves-016.jpg') right no-repeat
+    background-size: cover
+    &:before
+        content ""
+        setup($x,fixed,0,0,0,0,0)
+        background-color rgba(255,255,255,0.92)
+    
+.caps {text-transform: uppercase;}
+.justified {text-align: justify;}
+p.light {color: #777;}
+h2 {font('Open Sans',30px,5px,600,40px); color: black}
+h3 {font('Open Sans',21px,1px,600,28px); color: black}
+    
+.page
+    width 90%
+    max-width 1200px
+    margin 80px auto
+    background-color white
+    box-shadow 6px 10px 28px 0px rgba(0,0,0,0.4)
+    
+.top-bar
+    height 220px
+    background-color #848484
+    color white
+    
+.name
+    setup($x,absolute,$x,$x,0,0,calc(350px + 5%))
+    height 120px
+    text-align center
+    font('Raleway',58px,8px,100,60px)
+    & div {width: 94%}
+    
+.side-bar
+    setup($x,absolute,$x,60px,$x,0,5%)
+    width 350px
+    background-color #F7E0C1
+    padding 320px 30px 50px
+        
+.mugshot
+    setup($x,absolute,$x,50px,$x,$x,70px)
+    height 210px
+    width 210px
+    & .logo {margin: -23px;}
+    
+.logo
+    $midSize = 250px;    // Controls overall size
+    setup($x,absolute,$x,0,$x,$x,0)
+    z-index 100
+    margin 0
+    color black
+    height $midSize
+    width $midSize
+    & .logo-svg
+        height 100%
+        width 100%
+        stroke black
+        cursor pointer
+    & .logo-text
+        setup($x, absolute, $x, 58%, 16%)
+        cursor pointer
+        font("Montserrat", $midSize/5 + $midSize/50, 0px, 400, $midSize/5 + $midSize/30)
+
+.social
+    padding-left 60px
+    margin-bottom 20px
+    cursor pointer
+    &:before
+        content ""
+        setup($x,absolute,$x,-4px,$x,$x,10px)
+        height 35px
+        width 35px
+        background-size cover !important
+    &.twitter:before{background: url('https://cdn3.iconfinder.com/data/icons/social-media-2026/60/Socialmedia_icons_Twitter-07-128.png') center no-repeat}
+    &.pinterest:before{background: url('https://cdn3.iconfinder.com/data/icons/social-media-2026/60/Socialmedia_icons_Pinterest-23-128.png') center no-repeat}
+    &.linked-in:before{background: url('https://cdn3.iconfinder.com/data/icons/social-media-2026/60/Socialmedia_icons_LinkedIn-128.png') center no-repeat;}
+        
+.side-header
+    font('Open Sans',18px,4px,600,28px)
+    margin 60px auto 10px
+    padding-bottom 5px
+    border-bottom 1px solid #888
+    
+.list-thing {padding-left: 25px; margin-bottom: 10px}
+        
+.content-container
+    margin-right 0
+    width calc(95% - 350px)
+    padding 25px 40px 50px
+    & > * {margin: 0 auto 25px}
+    & > h3 {margin: 0 auto 5px}
+    & > p.long-margin {margin: 0 auto 50px}
+
+.title{width: 80%; text-align: center}
+
+.separator
+    width 240px
+    height 2px
+    background-color #999
+    
+.greyed
+    background-color #DDD
+    width 100%
+    max-width 580px
+    text-align center
+    font('Open Sans',18px,6px,600,28px)
+    
+@media screen and (max-width: 1150px)
+    .name {color: white; font('Raleway',38px,6px,100,48px)}
