@@ -1,84 +1,133 @@
-* {
-    box-sizing: border-box;
+ /* Basic reset */
+ * {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
-body {
+/* Full viewport size */
+html, body {
+    width: 100%;
+    min-height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f0f0;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.resume {
+    width: 210mm;
+    background-color: white;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    box-sizing: border-box;
     font-family: Arial, sans-serif;
-    max-width: 1024px;
-    margin: auto;
 }
 
-header {
-    width: 100%;
-    background: #333;
-    color: white;
-    padding: 10px 0;
-    text-align: center;
-}
-
-.content-wrapper {
+.header {
     display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
 }
 
-.main-content {
-    width: 65%; 
+.left-column {
+    flex: 1;
+    text-align: left;
 }
 
-.sidebar {
-    width: 35%;
+.right-column {
+    flex: 1;
     display: flex;
-    flex-direction: column;
-    justify-content: stretch;
-    padding-left: 20px;
+    justify-content: flex-end;
+    text-align: right;
 }
 
-.sidebar section {
-    text-align: center;
+.right-column table {
+    border-collapse: collapse; /* Optional: for cleaner table borders */
 }
 
-.sidebar section:last-child {
-    margin-top: 0px;
-    flex-grow: 1;
+.right-column td.label {
+    text-align: left; 
+    padding-right: 10px; /* Add some space between the label and the value */
 }
 
-footer {
-    width: 100%;
-    background: #333;
-    color: white;
-    padding: 10px 0;
-    text-align: center;
+.right-column td.value {
+    text-align: left; 
 }
 
-section {
-    margin: 20px 0;
-    padding: 10px;
-    background: #f4f4f4;
+.header h1 {
+    margin-bottom: 5px;
+    color: #4472C4;
 }
 
-h1, h2, h3, h4 {
+.header h5 {
+
+    margin-left: 5px;
+}
+
+.header p {
+    font-size: 14px;
+}
+
+.section {
+    margin-top: 20px;
+}
+
+.section h2 {
+    font-size: 18px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #4472C4;
+    color: #4472C4;
+}
+
+.section h4 {
+    margin-top: 5px;
     margin-bottom: 5px;
 }
 
-h4 {
-    margin-top: 10px;
+.section h5 {
+    margin-bottom: 10px;
 }
 
-ul {
-    list-style-type: disc;
-    margin-left: 0;
-    padding-left: 1em;
+.section ul {
+    list-style: none; /* Remove default bullets */
+    padding-left: 1.5em; /* Add left padding to make space for custom bullets */
 }
 
-li {
-    text-align: justify;
-    margin-bottom: 5px;
+.section ul li {
+    margin-bottom: 10px; /* Add space between list items */
+    position: relative; /* Create a positioning context for the custom bullet */
+    padding-left: 1.5em; /* Add left padding to make space for custom bullets */
+    margin-right: 40px;
+}
+
+.section ul li::before {
+    content: "•"; /* Custom bullet symbol */
+    position: absolute; /* Position it absolutely within the li */
+    left: 0; /* Align the bullet to the left */
+    top: 0; /* Align the bullet to the top */
+    color: black; /* Bullet color */
 }
 
 .cert-icons {
-    width: 45%;
-    padding-left: 5px;
-    padding-right: 5px;
-    padding-top: 10px;
+    max-width: 100%;  /* The image will not be wider than 100% of its container */
+    max-height: 100px;  /* Set the maximum height to 300px */
+    height: auto;  /* Maintain the aspect ratio */
+}
+
+.cert-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px; /* Adjust the gap size as needed */
+    align-content: center;
+}
+
+.job-container {
+    margin-top: 10px;
+    margin-bottom: 30px;
+    margin-left: 10px;
+    margin-right: 10px;
 }
