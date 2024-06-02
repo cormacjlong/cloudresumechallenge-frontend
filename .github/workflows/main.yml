@@ -193,7 +193,7 @@ jobs:
       run: |
         ./scripts/updateAPIGatewayUrl.ps1 -ApiGatewayUrl ${{ steps.tf-apply-outputs.outputs.api_custom_domain_url }}
 
-    - name: Deploy to Azure Storage Static Website
+    - name: Deploy to Azure Storage Static Website and purge CDN endpoint
       uses: azure/cli@v2
       with:
         azcliversion: 2.58.0
