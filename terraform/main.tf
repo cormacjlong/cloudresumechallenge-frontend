@@ -37,6 +37,11 @@ resource "azurerm_storage_account" "this" {
   account_replication_type = "LRS"
   account_kind             = "StorageV2"
   min_tls_version          = "TLS1_2"
+  blob_properties {
+    delete_retention_policy {
+      days = 1
+    }
+  }
 
   static_website {
     index_document = "index.html"
