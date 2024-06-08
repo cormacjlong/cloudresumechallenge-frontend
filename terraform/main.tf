@@ -72,6 +72,21 @@ resource "azurerm_cdn_endpoint" "this" {
     host_name = azurerm_storage_account.this.primary_web_host
   }
 
+  # Modify Global delivery rule
+  delivery_rule {
+    name  = "Global"
+    order = 0
+    cache_expiration_action {
+      behavior = "SetIfMissing"
+      duration = "1.00:00:00"
+    }
+    modify_response_header_action {
+      action = "Append"
+      name   = "X-Content-Type-Options"
+      value  = "nosniff"
+    }
+  }
+
   # Add a delivery rule that forces all traffic to use HTTPS
   delivery_rule {
     name  = "EnforceHTTPS"
