@@ -14,7 +14,7 @@
     --header-text-color: #4472C4;
     --section-border-color: #4472C4;
     --bullet-color: black;
-    --cert-opacity: 1;
+    --opacity: 1;
     --spinner-border-color: rgba(0, 0, 0, 0.1);
 }
 
@@ -22,13 +22,13 @@
 @media (prefers-color-scheme: dark) {
     :root {
         --background-color: #1e1e1e;
-        --text-color: #d1d1d1;
+        --text-color: white;
         --link-color: #5598f9;
         --header-background: #2c2c2c;
         --header-text-color: #5598f9;
         --section-border-color: #5598f9;
         --bullet-color: #d1d1d1;
-        --cert-opacity: 0.85;
+        --opacity: 0.87;
         --spinner-border-color: #d1d1d1;
     }
 }
@@ -58,6 +58,7 @@ a {
     box-sizing: border-box;
     font-family: Arial, sans-serif;
     color: var(--text-color);
+    opacity: var(--opacity);
 }
 
 .header {
@@ -160,7 +161,6 @@ a {
     max-width: 100%;  /* The image will not be wider than 100% of its container */
     max-height: 94px;  /* Set the maximum height to 300px */
     height: auto;  /* Maintain the aspect ratio */
-    opacity: var(--cert-opacity); /* Adjust opacity based on mode */
 }
 
 .cert-container {
