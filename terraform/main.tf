@@ -73,9 +73,7 @@ resource "azurerm_cdn_endpoint" "this" {
   }
 
   # Modify Global delivery rule
-  delivery_rule {
-    name  = "Global"
-    order = 0
+  global_delivery_rule {
     cache_expiration_action {
       behavior = "SetIfMissing"
       duration = "1.00:00:00"
