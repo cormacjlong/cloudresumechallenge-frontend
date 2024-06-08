@@ -72,6 +72,19 @@ resource "azurerm_cdn_endpoint" "this" {
     host_name = azurerm_storage_account.this.primary_web_host
   }
 
+  # Add a delivery rule that forces all traffic to use HTTPS
+  delivery_rule {
+    name  = "EnforceHTTPS"
+    order = 1
+    request_scheme_condition {
+      match_values = ["HTTP"]
+    }
+    url_redirect_action {
+      redirect_type = "Found"
+      protocol      = "Https"
+    }
+  }
+
   querystring_caching_behaviour = "IgnoreQueryString"
   tags                          = local.common_tags
 }
