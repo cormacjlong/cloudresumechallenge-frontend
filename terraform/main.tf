@@ -14,7 +14,7 @@ locals {
 # Naming module to ensure all resources have naming standard applied
 module "naming" {
   source      = "Azure/naming/azurerm"
-  suffix      = concat(var.project_prefix, [var.env])
+  suffix      = concat([var.env], var.project_prefix)
   unique-seed = data.azurerm_client_config.current.subscription_id
   version     = "0.4.1"
 }
@@ -119,8 +119,8 @@ resource "azurerm_dns_cname_record" "this" {
 }
 
 # Add a delay before creation of Custom Domain to allow DNS record to propagate
-resource "time_sleep" "wait_10_seconds" {
-  create_duration = "10s"
+resource "time_sleep" "delay_before_cdn_custom_domain" {
+  create_duration = "60s"
   triggers = {
     cname_record = azurerm_dns_cname_record.this.fqdn
   }
@@ -137,5 +137,5 @@ resource "azurerm_cdn_endpoint_custom_domain" "this" {
     protocol_type    = "ServerNameIndication"
     tls_version      = "TLS12"
   }
-  depends_on = [time_sleep.wait_10_seconds]
+  depends_on = [time_sleep.delay_before_cdn_custom_domain]
 }
