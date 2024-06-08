@@ -27,9 +27,9 @@
         --header-background: #2c2c2c;
         --header-text-color: #5598f9;
         --section-border-color: #5598f9;
-        --bullet-color: #d1d1d1;
-        --opacity: 0.87;
-        --spinner-border-color: #d1d1d1;
+        --bullet-color: white;
+        --opacity: 0.87; /* 87% recommended by Google Material Design */
+        --spinner-border-color: white;
     }
 }
 
