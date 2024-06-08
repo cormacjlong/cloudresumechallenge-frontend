@@ -1,8 +1,34 @@
- /* Basic reset */
- * {
+/* Basic reset */
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+/* Custom properties for light mode */
+:root {
+    --background-color: #f0f0f0;
+    --text-color: black;
+    --link-color: #4472C4;
+    --header-background: white;
+    --header-text-color: #4472C4;
+    --section-border-color: #4472C4;
+    --bullet-color: black;
+    --cert-opacity: 1;
+}
+
+/* Custom properties for dark mode */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background-color: #1e1e1e;
+        --text-color: #d1d1d1;
+        --link-color: #5598f9;
+        --header-background: #2c2c2c;
+        --header-text-color: #5598f9;
+        --section-border-color: #5598f9;
+        --bullet-color: #d1d1d1;
+        --cert-opacity: 0.85; /* Reduced opacity for dark mode */
+    }
 }
 
 /* Full viewport size */
@@ -12,23 +38,24 @@ html, body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #f0f0f0;
+    background-color: var(--background-color);
     padding: 20px;
     box-sizing: border-box;
 }
 
 a {
-    color: #4472C4;
+    color: var(--link-color);
     text-decoration: none;
 }
 
 .resume {
     width: 210mm;
-    background-color: white;
+    background-color: var(--header-background);
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
     padding: 50px;
     box-sizing: border-box;
     font-family: Arial, sans-serif;
+    color: var(--text-color);
 }
 
 .header {
@@ -59,7 +86,7 @@ a {
     text-align: right;
     vertical-align: text-top;
     min-width: 80px;
-    color: black;
+    color: var(--text-color);
     padding-top: 5px;
     padding-bottom: 5px;
 }
@@ -75,7 +102,7 @@ a {
 .header h1 {
     margin-bottom: 5px;
     margin-right: 10px;
-    color: #4472C4;
+    color: var(--header-text-color);
 }
 
 .header h5 {
@@ -93,9 +120,9 @@ a {
 .section h2 {
     font-size: 18px;
     margin-bottom: 15px;
-    border-bottom: 1px solid #4472C4;
+    border-bottom: 1px solid var(--section-border-color);
     padding-bottom: 7px;
-    color: #4472C4;
+    color: var(--header-text-color);
 }
 
 .section h4 {
@@ -124,13 +151,14 @@ a {
     position: absolute; /* Position it absolutely within the li */
     left: 0; /* Align the bullet to the left */
     top: 0; /* Align the bullet to the top */
-    color: black; /* Bullet color */
+    color: var(--bullet-color); /* Bullet color */
 }
 
 .cert-icons {
     max-width: 100%;  /* The image will not be wider than 100% of its container */
     max-height: 94px;  /* Set the maximum height to 300px */
     height: auto;  /* Maintain the aspect ratio */
+    opacity: var(--cert-opacity); /* Adjust opacity based on mode */
 }
 
 .cert-container {
@@ -149,9 +177,9 @@ a {
 
 #visitorCount {
     position: relative;
-  }
+}
 
-  .spinner {
+.spinner {
     position: bottom;
     top: 50%;
     left: 50%;
@@ -160,16 +188,16 @@ a {
     height: 15px;
     border: 3px solid rgba(0, 0, 0, 0.1);
     border-radius: 50%;
-    border-top-color: #4472C4;
+    border-top-color: var(--header-text-color);
     animation: spin 1s ease infinite;
     display: none; /* Hide the spinner initially */
-  }
+}
 
-  @keyframes spin {
+@keyframes spin {
     0% {
-      transform: rotate(0deg);
+        transform: rotate(0deg);
     }
     100% {
-      transform: rotate(360deg);
+        transform: rotate(360deg);
     }
-  }
+}
