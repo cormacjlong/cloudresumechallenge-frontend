@@ -66,6 +66,7 @@ resource "azurerm_cdn_endpoint" "this" {
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
   origin_host_header  = azurerm_storage_account.this.primary_web_host
+  querystring_caching_behaviour = "UseQueryString"
 
   origin {
     name      = "${azurerm_storage_account.this.name}-origin"
