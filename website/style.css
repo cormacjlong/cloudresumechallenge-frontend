@@ -15,6 +15,7 @@
     --section-border-color: #4472C4;
     --bullet-color: black;
     --cert-opacity: 1;
+    --spinner-border-color: rgba(0, 0, 0, 0.1);
 }
 
 /* Custom properties for dark mode */
@@ -27,7 +28,8 @@
         --header-text-color: #5598f9;
         --section-border-color: #5598f9;
         --bullet-color: #d1d1d1;
-        --cert-opacity: 0.85; /* Reduced opacity for dark mode */
+        --cert-opacity: 0.85;
+        --spinner-border-color: #d1d1d1;
     }
 }
 
@@ -186,7 +188,7 @@ a {
     transform: translate(-50%, -50%);
     width: 15px;
     height: 15px;
-    border: 3px solid rgba(0, 0, 0, 0.1);
+    border: 3px solid var(--spinner-border-color);
     border-radius: 50%;
     border-top-color: var(--header-text-color);
     animation: spin 1s ease infinite;
