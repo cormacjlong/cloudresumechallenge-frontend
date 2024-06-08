@@ -61,11 +61,11 @@ resource "azurerm_cdn_profile" "this" {
 
 # Create a CDN endpoint to front the storage account
 resource "azurerm_cdn_endpoint" "this" {
-  name                = module.naming.cdn_endpoint.name_unique
-  profile_name        = azurerm_cdn_profile.this.name
-  resource_group_name = azurerm_resource_group.this.name
-  location            = azurerm_resource_group.this.location
-  origin_host_header  = azurerm_storage_account.this.primary_web_host
+  name                          = module.naming.cdn_endpoint.name_unique
+  profile_name                  = azurerm_cdn_profile.this.name
+  resource_group_name           = azurerm_resource_group.this.name
+  location                      = azurerm_resource_group.this.location
+  origin_host_header            = azurerm_storage_account.this.primary_web_host
   querystring_caching_behaviour = "UseQueryString"
 
   origin {
@@ -99,8 +99,7 @@ resource "azurerm_cdn_endpoint" "this" {
     }
   }
 
-  querystring_caching_behaviour = "IgnoreQueryString"
-  tags                          = local.common_tags
+  tags = local.common_tags
 }
 
 # Get the Azure DNS Zone
