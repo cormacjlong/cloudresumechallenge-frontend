@@ -19,7 +19,7 @@ const updateVisitorCount = async () => {
                 sessionStorage.setItem('currentVisitorCount', data);
             } else {
                 console.error('Failed to fetch visitor count:', response.statusText);
-                document.getElementById('visitorCount').textContent = 'Something went wrong!';
+                document.getElementById('visitorCount').textContent = 'Something went wrong!😞';
             }
         } else {
             // Display the count from session storage
@@ -29,10 +29,10 @@ const updateVisitorCount = async () => {
         spinner.style.display = 'none'; // Hide spinner
         console.error('Error fetching visitor count:', error);
         if (response.status == 429) {
-            document.getElementById('visitorCount').textContent = 'Rate Limit exceeded!';
+            document.getElementById('visitorCount').textContent = 'Rate Limit exceeded!😮';
         } else {
             console.error('Failed to fetch visitor count:', response.statusText);
-            document.getElementById('visitorCount').textContent = 'Something went wrong!';
+            document.getElementById('visitorCount').textContent = 'Something went wrong!😞';
         }
     }
 };
