@@ -18,10 +18,10 @@ const updateVisitorCount = async () => {
                 // Store the fetched count in session storage
                 sessionStorage.setItem('currentVisitorCount', data);
             } else if (response.status == 429) {
-                document.getElementById('visitorCount').textContent = "Rate Limit exceeded! 😮";
+                document.getElementById('visitorCount').textContent = "Rate Limit exceeded!";
             } else {
                 console.error('Failed to fetch visitor count:', response.statusText);
-                document.getElementById('visitorCount').textContent = "Something went wrong! 😞";
+                document.getElementById('visitorCount').textContent = "Something went wrong!";
             }
         } else {
             // Display the count from session storage
