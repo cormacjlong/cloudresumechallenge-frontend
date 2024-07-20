@@ -1,29 +1,33 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const updateVisitorCount = async () => {
-        const spinner = document.getElementById('loadingSpinner');
-        try {
-            const url = 'https://cv-api.az.macro-c.com/api/getvisitor';
-            // Check if we already have a count for this session
-            const storedCount = sessionStorage.getItem('currentVisitorCount');
-            if (storedCount) {
-                document.getElementById('visitorCount').textContent = storedCount;
-                return; // Exit if we already have a count, avoiding an unnecessary API call
-            }
-            // If no count is stored, fetch it from the API
+const updateVisitorCount = async () => {
+    const spinner = document.getElementById('loadingSpinner');
+    try {
+        const url = 'https://cv-api.az.macro-c.com/api/getvisitor';
+        
+        // Get the count stored in session storage
+        const storedCount = sessionStorage.getItem('currentVisitorCount');
+        
+        // Check if we need to fetch updated count from the API
+        if (!storedCount) {
             spinner.style.display = 'block'; // Show spinner
             const response = await fetch(url);
             spinner.style.display = 'none'; // Hide spinner
             if (response.ok) {
                 const data = await response.text();
+                // Update the count displayed on the webpage
                 document.getElementById('visitorCount').textContent = data;
-                sessionStorage.setItem('currentVisitorCount', data); // Store the fetched count
+                // Store the fetched count in session storage
+                sessionStorage.setItem('currentVisitorCount', data);
             } else {
                 console.error('Failed to fetch visitor count:', response.statusText);
             }
-        } catch (error) {
-            spinner.style.display = 'none'; // Hide spinner
-            console.error('Error fetching visitor count:', error);
+        } else {
+            // Display the count from session storage
+            document.getElementById('visitorCount').textContent = storedCount;
         }
-    };
-    updateVisitorCount();
-});
+    } catch (error) {
+        spinner.style.display = 'none'; // Hide spinner
+        console.error('Error fetching visitor count:', error);
+    }
+};
+
+document.addEventListener('DOMContentLoaded', updateVisitorCount);
