@@ -19,7 +19,7 @@ const updateVisitorCount = async () => {
                 sessionStorage.setItem('currentVisitorCount', data);
             } else {
                 console.error('Failed to fetch visitor count:', response.statusText);
-                document.getElementById('visitorCount').textContent = 'Something went wrong😞';
+                document.getElementById('visitorCount').textContent = 'Something went wrong 😞';
             }
         } else {
             // Display the count from session storage
