@@ -21,7 +21,8 @@ const updateVisitorCount = async () => {
                 document.getElementById('visitorCount').textContent = 'Rate limit reached 😮';
             } else {
                 console.error('Failed to fetch visitor count:', response.statusText);
-                document.getElementById('visitorCount').textContent = 'Something went wrong 😞 - '.concat(response.status);
+                document.getElementById('visitorCount').textContent = 'Something went wrong 😞 - ';
+                console.log("response.status =", response.status);
             }
         } else {
             // Display the count from session storage
